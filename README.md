@@ -1,6 +1,6 @@
-# Student Management Fullstack Application
+# Student Management System
 
-A fullstack application with a **Spring Boot 4** backend, **Hibernate JPA**, **MySQL 8.4 (LTS)** database, and a **React 18** frontend (powered by **Vite**).
+A fullstack Student Management application with a **Spring Boot** REST API, **MySQL** database, and a basic, clean **React** frontend.
 
 ---
 
@@ -8,84 +8,54 @@ A fullstack application with a **Spring Boot 4** backend, **Hibernate JPA**, **M
 
 ```
 springboot/
-├── backend/                       # Spring Boot 4 REST API
-│   ├── src/
-│   │   ├── main/java/com/example/student_management/
-│   │   │   ├── controller/        # StudentController (REST endpoints)
-│   │   │   ├── entity/            # Student (JPA Entity with validations)
-│   │   │   ├── repository/        # StudentRepository (Spring Data JPA)
-│   │   │   ├── services/          # StudentServices (Business logic)
-│   │   │   ├── exception/         # GlobalExceptionHandler, Custom Exceptions
-│   │   │   └── StudentManagementApplication.java
-│   │   └── resources/
-│   │       └── application.properties # MySQL DataSource & Hibernate config
-│   ├── pom.xml
-│   └── mvnw / mvnw.cmd
-│
-├── frontend/                      # React 18 Application
-│   ├── src/
-│   │   ├── services/studentApi.js # API client connecting to backend
-│   │   ├── App.jsx                # Main React dashboard component
-│   │   ├── index.css              # Custom styling tokens and layout
-│   │   └── main.jsx               # React entry point
-│   ├── package.json
-│   ├── vite.config.js             # Vite config with backend proxy (:8080)
-│   └── index.html
-│
-├── start-all.sh / .bat            # One-click launcher for MySQL, Backend & Frontend
-├── start-backend.sh / .bat        # Quick launcher for Spring Boot
-├── start-frontend.sh / .bat       # Quick launcher for React Vite
-├── start-mysql.sh / .bat          # Quick launcher for MySQL server
-└── stop-mysql.sh / .bat           # Graceful shutdown for MySQL server
+├── backend/    # Spring Boot REST API & MySQL Hibernate JPA
+└── frontend/   # Basic React frontend (Vite)
 ```
 
 ---
 
-## Running on macOS
+## Getting Started
 
-### 1. Prerequisites (macOS)
-Install MySQL and Node.js (if not already installed via Homebrew):
-```bash
-brew install mysql node
-brew services start mysql
+### 1. Database Setup (MySQL)
+Make sure MySQL is running on `localhost:3306` with the database created:
+```sql
+CREATE DATABASE IF NOT EXISTS student_management_db;
 ```
-
-Ensure MySQL has the database created:
-```bash
-mysql -u root -e "CREATE DATABASE IF NOT EXISTS student_management_db;"
-```
-
-### 2. Start Fullstack App (macOS)
-```bash
-chmod +x *.sh backend/mvnw
-./start-all.sh
-```
-
-Or run services individually:
-- **Start Backend**: `./start-backend.sh` (or `cd backend && ./mvnw spring-boot:run`) -> `http://localhost:8080`
-- **Start Frontend**: `./start-frontend.sh` (or `cd frontend && npm install && npm run dev`) -> `http://localhost:5173`
+Database credentials are in `backend/src/main/resources/application.properties`.
 
 ---
 
-## Running on Windows
-
-### Quick Start (Windows)
-Double-click `start-all.bat` or execute in PowerShell:
-```powershell
-.\start-all.bat
+### 2. Run Backend (Spring Boot)
+In terminal:
+```bash
+cd backend
+./mvnw spring-boot:run
 ```
+*(On Windows: `.\mvnw.cmd spring-boot:run`)*
 
-Or run services individually:
-- **Start MySQL**: `.\start-mysql.bat`
-- **Start Backend**: `.\start-backend.bat`
-- **Start Frontend**: `.\start-frontend.bat`
+The backend will start at **`http://localhost:8080`**.
 
 ---
 
-## Features
-- **Real-time Stat Cards**: Total Students, Average Marks, Top Marks, Active Courses.
-- **Full CRUD Support**: Add, view, edit, and delete student records.
-- **Search & Filter**: Instant search by student name/email and course dropdown filter.
-- **Validation**: Strict validation on backend and client-side (mandatory fields, valid email format, marks 0–100).
-- **MySQL Persistence**: Full relational database persistence in MySQL 8.4 (`student_management_db`).
-- **REST APIs**: Clean RESTful endpoints under `/api/students`.
+### 3. Run Frontend (React)
+In a separate terminal:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+The frontend will start at **`http://localhost:5173`** (or `http://localhost:5174`).
+
+---
+
+## REST API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/students` | Get all students (optional `?name=` or `?course=`) |
+| `GET` | `/api/students/{id}` | Get student by ID |
+| `POST` | `/api/students` | Create new student |
+| `PUT` | `/api/students/{id}` | Update student by ID |
+| `DELETE` | `/api/students/{id}` | Delete student by ID |
+| `GET` | `/api/students/course/{course}` | Get students by course |
